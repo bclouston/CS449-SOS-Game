@@ -11,21 +11,44 @@ public class GameView extends JFrame {
     private JButton oRedButton, sRedButton, oBlueButton, sBlueButton, rulesButton, newGameButton;
     private JComboBox sizeComboBox;
     private JLabel infoLabel;
-    private JButton[] gameboardButtons;
+    private JButton[] gameBoardButtons;
 
     public GameView() {
         setTitle("Play SOS Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1000, 850);
         setLocationRelativeTo(null);
         setContentPane(gamePanel);
-        setSize(900, 600);
         buildComboBox();
     }
 
+    // builds dropdown menu for board size selection
     public void buildComboBox() {
-        for (int i = 3; i <= 9; i++) {
+        for (int i = 3; i <= 15; i++) {
             sizeComboBox.addItem(i);
         }
+    }
+
+    // generates game board of selected size
+    public void createGameBoard(int size, ActionListener listener) {
+        gameBoardButtons = new JButton[size * size];
+        JPanel board = new JPanel();
+        for (int i = 0; i < size * size; i++) {
+            JButton button = new JButton();
+            if (size <= 7) {
+                button.setFont(new Font("Dialog", Font.BOLD,28));
+            }
+            button.addActionListener(listener);
+            gameBoardButtons[i] = button;
+            board.add(button);
+        }
+        board.setLayout(new GridLayout(size,size));
+        board.setSize(650,650);
+        board.setVisible(true);
+        gameBoardPanel.add(board, "gb");
+        gameBoardPanel.add(board, 0);
+        CardLayout c1 = (CardLayout)(gameBoardPanel.getLayout());
+        c1.first(gameBoardPanel);
     }
 
     // SETTERS
@@ -53,18 +76,20 @@ public class GameView extends JFrame {
         rulesButton.addActionListener(listener);
     }
 
-    public void updateInfoLabel(String s) {
+    public void setInfoLabel(String s, Color color) {
         infoLabel.setText(s);
+        infoLabel.setForeground(color);
     }
 
-    public void updateGameCell(int i, String s) {
-        gameboardButtons[i].setText(s);
+    public void setGameCell(int i, String s) {
+        gameBoardButtons[i].setText(s);
     }
 
     // GETTERS
     public int getBoardSize() {
         return sizeComboBox.getSelectedIndex() + 3;
     }
+
     public boolean generalGameRadio() {
         return generalRadioButton.isEnabled();
     }
@@ -73,35 +98,16 @@ public class GameView extends JFrame {
         return simpleRadioButton.isEnabled();
     }
 
+    public String getGameCell(int index) {
+        return gameBoardButtons[index].getText();
+    }
+
     public int getSelectedIndex(Object selected) {
-        for (int i = 0; i < gameboardButtons.length; i++) {
-            if (selected.equals(gameboardButtons[i])) {
+        for (int i = 0; i < gameBoardButtons.length; i++) {
+            if (selected.equals(gameBoardButtons[i])) {
                 return i;
             }
         }
         return -1;
     }
-
-    public void createGameBoard(int size, ActionListener listener) {
-        gameboardButtons = new JButton[size * size];
-        JPanel board = new JPanel();
-        for (int i = 0; i < size * size; i++) {
-            JButton button = new JButton();
-            button.addActionListener(listener);
-            gameboardButtons[i] = button;
-            board.add(button);
-        }
-
-        board.setLayout(new GridLayout(size,size));
-        board.setSize(400,400);
-        board.setVisible(true);
-        gameBoardPanel.add(board, "gb");
-        gameBoardPanel.add(board, 0);
-        CardLayout c1 = (CardLayout)(gameBoardPanel.getLayout());
-        c1.show(gameBoardPanel, "gb");
-    }
-
-
-
-
 }
