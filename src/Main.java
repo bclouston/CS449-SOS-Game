@@ -4,7 +4,7 @@ import views.*;
 public class Main {
 
     public static void main(String[] args) {
-        GameView gv = new GameView();
-        GameController gc = new GameController(gv);
+        GUI gui = new GUI();
+        GUIController gc = new GUIController(gui);
     }
 }
