@@ -4,9 +4,11 @@ SOS Game is a project developed throughout COMP-SCI 449: Foundations of Software
 
 ## Game Rules
 - <b>Simple Game</b>
-  - First player to score an SOS sequence horizontally, vertically or diagonally wins. Game is a draw if board filled without a scoring SOS sequence played.
+  - First player to score an SOS sequence horizontally, vertically or diagonally wins.
+  - Game is a draw if board filled without a scoring SOS sequence played.
 
 - <b>General Game</b>
+  - When an SOS sequence is scored, player is allowed to take another turn
   - Game runs until board is filled, the player to score the most SOS sequences wins
 
 ## Instructions
