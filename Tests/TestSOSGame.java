@@ -9,6 +9,7 @@ import models.*;
 public class TestSOSGame {
     private SOSGame g;
 
+    //  combines methods for inserting move into board and checking game state
     private void move(int row, int col, char move, char player) {
         g.makeMove(row, col, move, player);
         g.checkMove(row, col, player);
@@ -41,12 +42,25 @@ public class TestSOSGame {
     }
 
     @Test
-    /*  Acceptance Criterion: 4.2, 6.3
-        check if active player is switched after successful turn
+    /*  Acceptance Criterion: 4.2
+        check if active player is switched after successful turn in simple game
     */
-    public void testTurnSwitching() {
-        g.makeMove(0, 0, 'S', 'R');
+    public void testTurnSwitchingSimple() {
+        g = new SOSSimple(3);
+        move(0, 0, 'S', 'R');
         assertEquals('B', g.getActivePlayer());
+    }
+
+    @Test
+    /*  Acceptance Criterion: 6.3
+        check if active player is NOT switched after SOS sequence played in general game
+    */
+    public void testTurnSwitchingGeneral() {
+        g = new SOSGeneral(3);
+        move(0, 0, 'S', 'R');
+        move(0, 1, 'O', 'B');
+        move(0, 2, 'S', 'R'); // red score
+        assertEquals('R', g.getActivePlayer());
     }
 
     @Test
@@ -93,12 +107,12 @@ public class TestSOSGame {
         move(0, 0, 'S', 'R');
         move(0, 1, 'O', 'B');
         move(0, 2, 'S', 'R'); // red score
-        move(1, 1, 'O', 'B');
-        move(2, 2, 'S', 'R'); // red score
-        move(1, 2, 'O', 'B'); // blue score
-        move(1, 0, 'O', 'R');
+        move(2, 2, 'S', 'R');
+        move(1, 1, 'O', 'B'); // blue score
         move(2, 0, 'O', 'B');
-        move(2, 1, 'O', 'R');
+        move(1, 2, 'O', 'R'); // red score
+        move(1, 0, 'O', 'R');
+        move(2, 1, 'O', 'B');
         assertTrue(g.isGameOver());
         assertEquals('R', g.getWinner());
     }
@@ -128,10 +142,10 @@ public class TestSOSGame {
         move(0, 0, 'S', 'R');
         move(0, 1, 'O', 'B');
         move(0, 2, 'S', 'R'); // red score
+        move(2, 0, 'O', 'R');
         move(1, 0, 'S', 'B');
         move(1, 1, 'O', 'R');
         move(1, 2, 'S', 'B'); // blue score
-        move(2, 0, 'O', 'R');
         move(2, 1, 'O', 'B');
         move(2, 2, 'O', 'R');
         assertTrue(g.isGameOver());
