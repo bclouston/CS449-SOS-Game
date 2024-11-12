@@ -40,10 +40,18 @@ public class SOSGame {
             return false;
         }
         if (board.playMove(row, col, move)) {
-            switchPlayer();
+            board.printBoard();
             return true;
         }
         else return false;
+    }
+
+    public char[] getLLMMove() {
+        return activePlayer.getMoveLLM();
+    }
+
+    public char[] getComputerMove() {
+        return activePlayer.getMoveAI(board);
     }
 
     // parses scoreMap to determine winner or draw
@@ -64,6 +72,10 @@ public class SOSGame {
         else return 'D';
     }
 
+    public void printBoard() {
+        board.printBoard();
+    }
+
     public HashMap<int[][], Color> getScoreMap() {
         return scoreMap;
     }
@@ -81,7 +93,7 @@ public class SOSGame {
     }
 
     // switches active player
-    private void switchPlayer() {
+    protected void switchPlayer() {
         for (Player p : players) {
             if (p != activePlayer) {
                 activePlayer = p;
@@ -89,5 +101,6 @@ public class SOSGame {
             }
         }
     }
+
 
 }

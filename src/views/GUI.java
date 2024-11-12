@@ -12,6 +12,7 @@ public class GUI extends JFrame {
     private JButton oRedButton, sRedButton, oBlueButton, sBlueButton, rulesButton, newGameButton;
     private JComboBox sizeComboBox;
     private JLabel infoLabel, redScoreField, blueScoreField;
+    private JRadioButton llmRadio;
     private BoardPanel boardPanel;
     private JLabel[][] gameCells;
 
@@ -139,6 +140,18 @@ public class GUI extends JFrame {
 
     public boolean getSimpleGameRadio() {
         return simpleRadioButton.isSelected();
+    }
+
+    public boolean getRedAIRadio() {
+        return aiRedRadioButton.isSelected();
+    }
+
+    public boolean getBlueAIRadio() {
+        return aiBlueRadioButton.isSelected();
+    }
+
+    public boolean getLLMRadio() {
+        return llmRadio.isSelected();
     }
 
     public String getGameCell(int[] cell) {

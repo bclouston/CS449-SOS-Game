@@ -38,6 +38,7 @@ public class SOSSimple extends SOSGame {
                 }
             }
         }
+        switchPlayer();
         return flag;
     }
 }

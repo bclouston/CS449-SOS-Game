@@ -1,0 +1,55 @@
+{
+  "generate_answer": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "board_state": "[S . .]\n[O S .]\n[O O .]",
+        "reasoning": "In the current board state, placing an 'S' at (0, 1) will create an 'SOS' vertically with the existing 'S' at (1, 1) and the 'O' at (2, 1). This move not only completes an 'SOS' but also blocks the opponent from potentially forming an 'SOS' in the next turn. Therefore, the best move is to place 'S' at (0, 1).",
+        "move": "(0, 1, S)"
+      },
+      {
+        "augmented": true,
+        "board_state": "[. . S]\n[S O .]\n[. . O]",
+        "reasoning": "In the current board state, the move at (1, 2) with the letter 'S' will complete the SOS sequence with the letters at (1, 1) and (1, 0). Additionally, there are no immediate threats to block from the opponent. Therefore, the best move is to place 'S' in the bottom row to create the SOS sequence.",
+        "move": "(1, 2, S)"
+      }
+    ],
+    "signature": {
+      "instructions": "You are playing SOS. Choose the next move (either an 'S' or 'O') that maximizes the chance of forming an 'SOS' in any direction.\"\nIf multiple moves form an SOS, choose the one with the highest impact (e.g., completing multiple 'SOS' at once). \nIf no moves form an SOS, focus on blocking the opponent.",
+      "fields": [
+        {
+          "prefix": "Board State:",
+          "description": "current state of the SOS game board"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Move Index:",
+          "description": "Coordinates and the letter of the best move, e.g., (0, 2, S)."
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "You are playing SOS. Choose the next move (either an 'S' or 'O') that maximizes the chance of forming an 'SOS' in any direction.\"\nIf multiple moves form an SOS, choose the one with the highest impact (e.g., completing multiple 'SOS' at once). \nIf no moves form an SOS, focus on blocking the opponent.",
+      "fields": [
+        {
+          "prefix": "Board State:",
+          "description": "current state of the SOS game board"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Move Index:",
+          "description": "Coordinates and the letter of the best move, e.g., (0, 2, S)."
+        }
+      ]
+    }
+  }
+}

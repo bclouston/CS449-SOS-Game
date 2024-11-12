@@ -5,6 +5,8 @@ import views.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+
 /*
     Links GUI components to the GameController
 */
@@ -27,6 +29,7 @@ public class GUIController {
         gui.setORedButtonListener(new RedOButtonListener());
         gui.setSBlueButtonListener(new BlueSButtonListener());
         gui.setOBlueButtonListener(new BlueOButtonListener());
+        gui.setRulesButtonListener(new RulesButtonListener());
     }
 
     // starts new game and adjusts GUI components
@@ -37,27 +40,48 @@ public class GUIController {
         gui.setScore('R', "");
         gui.setScore('B', "");
         selectedCell = new int[] {-1, -1};
+        if (gui.getRedAIRadio()) {
+            char[] aiMove = gc.getComputerMove();
+            int [] cellAI = {Character.getNumericValue(aiMove[0]), Character.getNumericValue(aiMove[1])};
+            String moveAI = Character.toString(aiMove[2]);
+            playMove('R', moveAI, cellAI);
+        }
     }
 
-    // paints move to GUI if valid and update infoLabel text
     public void playMove(char player, String move, int[] cell) {
         String pColor = "";
         Color c = null;
+        boolean aiNext = false;
+        boolean aiCurrent = false;
+        boolean llmNext = false;
+        boolean llmCurrent = false;
+        char nextPlayer = 'R';
         if (player == 'R') {
             pColor = "Blue";
             c = Color.BLUE;
+            aiNext = gui.getBlueAIRadio();
+            aiCurrent = gui.getRedAIRadio();
+            llmNext = gui.getLLMRadio();
+            nextPlayer = 'B';
         }
         if (player == 'B') {
             pColor = "Red";
             c = Color.RED;
+            aiNext = gui.getRedAIRadio();
+            aiCurrent = gui.getBlueAIRadio();
+            llmCurrent = gui.getLLMRadio();
         }
-
         gui.setGameCell(cell, move);
         if (gc.handleMove(player, move, cell)) {
-            gui.setInfoLabel(pColor + " Player's turn...", c);
             if (gc.scoringMoveCheck(cell, player)) {
                 gui.paintScoreLines(gc.getScoreMap());
                 gui.setScore(player, gc.getScore(player));
+                aiNext = aiCurrent;
+                nextPlayer = player;
+                llmNext = llmCurrent;
+            }
+            else {
+                gui.setInfoLabel(pColor + " Player's turn...", c);
             }
             if (gc.isGameOver()) {
                 char outcome = gc.getWinner();
@@ -71,12 +95,22 @@ public class GUIController {
                     gui.setInfoLabel("Blue wins! Start a new game...", Color.BLUE);
                 }
             }
-
+            if (llmNext && !gc.isGameOver()) {
+                char[] llmMove = gc.getLLMMove();
+                int[] cellLLM = {llmMove[0]-'0', llmMove[1]-'0'};
+                String moveLLM = Character.toString(llmMove[2]);
+                playMove(nextPlayer, moveLLM, cellLLM);
+            }
+            if (aiNext && !gc.isGameOver()) {
+                char[] aiMove = gc.getComputerMove();
+                int [] cellAI = {Character.getNumericValue(aiMove[0]), Character.getNumericValue(aiMove[1])};
+                String moveAI = Character.toString(aiMove[2]);
+                playMove(nextPlayer, moveAI, cellAI);
+            }
         }
         else {
             gui.setGameCell(cell, "");
         }
-        selectedCell = new int[] {-1, -1};
     }
 
     // returns true if game cell contains a played move
@@ -123,6 +157,13 @@ public class GUIController {
         @Override
         public void actionPerformed(ActionEvent e) {
             playMove('B', "O", selectedCell);
+        }
+    }
+
+    private class RulesButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            gc.outputBoard();
         }
     }
 

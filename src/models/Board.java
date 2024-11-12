@@ -1,5 +1,7 @@
 package models;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 /*
     logistical representation of the SOS game board
@@ -14,6 +16,7 @@ public class Board {
         board = new char[size][size];
     }
 
+    // checks if game cell contains previously played move
     public boolean isMoveValid(int row, int col) {
         if (row == -1) {
             return false;
@@ -52,7 +55,8 @@ public class Board {
             sequenceList.add(sequence);
         }
         // check diagonal sequence (top-left to bottom-right)
-        if (row + 2 < size && col + 2 < size && board[row][col] == 'S' && board[row + 1][col + 1] == 'O' && board[row + 2][col + 2] == 'S') {
+        if (row + 2 < size && col + 2 < size &&
+                board[row][col] == 'S' && board[row + 1][col + 1] == 'O' && board[row + 2][col + 2] == 'S') {
             int[][] sequence = new int[3][2];
             sequence[0] = new int[] {row, col};
             sequence[1] = new int[] {row + 1, col + 1};
@@ -60,7 +64,8 @@ public class Board {
             sequenceList.add(sequence);
         }
         // check diagonal sequence (top-right to bottom-left)
-        if (row + 2 < size && col - 2 >= 0 && board[row][col] == 'S' && board[row + 1][col - 1] == 'O' && board[row + 2][col - 2] == 'S') {
+        if (row + 2 < size && col - 2 >= 0 &&
+                board[row][col] == 'S' && board[row + 1][col - 1] == 'O' && board[row + 2][col - 2] == 'S') {
             int[][] sequence = new int[3][2];
             sequence[0] = new int[] {row, col};
             sequence[1] = new int[] {row + 1, col - 1};
@@ -96,6 +101,41 @@ public class Board {
             }
         }
         return true;
+    }
+
+    public void printBoard() {
+        int size = board.length;
+        try (PrintWriter out = new PrintWriter("C:\\Users\\bmclo\\OneDrive\\Documents\\JavaPrograms\\SOS\\src\\board_input.txt")) {
+            for (int i = 0; i < size; i++) {
+                out.print("[");
+                for (int j = 0; j < size; j++) {
+                    if (board[i][j] == 'S' || board[i][j] == 'O') {
+                        out.print(board[i][j]);
+                    }
+                    else {
+                        out.print(".");
+                    }
+                    if (j + 1 != size) {
+                        out.print(" ");
+                    }
+                }
+                out.print("]");
+                if (i + 1 != size) {
+                    out.print("\n");
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // used when a computer player calculates a move
+    public void deleteMove(int row, int col) {
+        this.board[row][col] = '.';
+    }
+
+    public int getSize() {
+        return size;
     }
 
 }

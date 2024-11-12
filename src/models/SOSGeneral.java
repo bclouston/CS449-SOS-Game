@@ -19,7 +19,7 @@ public class SOSGeneral extends SOSGame {
     */
     public boolean checkMove(int row, int col, char player) {
         LinkedList<int[][]> sequenceList = board.findSequences();
-        boolean flag = false;
+        boolean flag = false;   // played move completes SOS sequence
         if (isBoardFull()) {
             gameOver = true;
         }
@@ -40,15 +40,20 @@ public class SOSGeneral extends SOSGame {
                 }
             }
         }
+        if (!flag) {
+            switchPlayer();
+        }
         return flag;
     }
 
     @Override
-    // returns players score as string to be inserted into GUI
+    /*  returns players score as string to be inserted into GUI
+    */
     public String getScore(char player) {
         if (player == 'R') {
             return "Score: " + redScore;
         }
         else return "Score: " + blueScore;
     }
+
 }

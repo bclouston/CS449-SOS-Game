@@ -22,6 +22,10 @@ public class GameController {
         }
     }
 
+    public void outputBoard() {
+        game.printBoard();
+    }
+
     public boolean handleMove(char player, String move, int[] cell) {
         return game.makeMove(cell[0], cell[1], move.charAt(0), player);
     }
@@ -44,6 +48,14 @@ public class GameController {
 
     public char getWinner() {
         return game.getWinner();
+    }
+
+    public char[] getLLMMove() {
+        return game.getLLMMove();
+    }
+
+    public char[] getComputerMove() {
+        return game.getComputerMove();
     }
 
 }
